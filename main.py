@@ -1,10 +1,9 @@
 import glob
 import os
 import sys
+import time
 
 import cv2
-from PIL import Image
-import numpy as np
 import matplotlib.pyplot as plt
 
 
@@ -13,7 +12,7 @@ def generate_thumbnail(mp4_path):
     file_name, file_ext = os.path.splitext(os.path.basename(mp4_path))
     tmp_dir = os.path.join(base_path, 'tmp', file_name)
 
-    if file_ext != "mp4":
+    if file_ext != ".mp4":
         return
 
     os.makedirs(tmp_dir, exist_ok=True)
@@ -76,8 +75,12 @@ if __name__ == "__main__":
     print(f"{len(file_list)} Files")
     for f in file_list:
         print(f"{os.path.basename(f)}")
-    for f in file_list:
+    for i, f in enumerate(file_list):
         try:
+            start = time.time()
             generate_thumbnail(f)
-        except Exception:
-            pass
+            print(f)
+            print(
+                f"{i+1}/{len(file_list)} Complete.\nElapsed time: {round(time.time() - start, 1)}s")
+        except Exception as e:
+            print(f"Error: {e}")
